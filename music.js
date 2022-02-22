@@ -1,9 +1,12 @@
 const ytdl = require("ytdl-core");
 
 const queue = new Map();
+let time = 0;
+let client = null;
 
 module.exports = {
-    run: async (command, message) => {
+    run: async (command, message, mainClient) => {
+        client = mainClient;
         if (
             !message.member.roles.cache.has("379325076740374528") &&
             !message.member.roles.cache.has("279437266491801602") &&
@@ -111,14 +114,24 @@ function stop(message, serverQueue) {
     serverQueue.connection.dispatcher.end();
 }
 
-function play(guild, song) {
+async function play(guild, song) {
     const serverQueue = queue.get(guild.id);
-    if (!song) {
-        serverQueue.voiceChannel.leave();
-        queue.delete(guild.id);
-        return;
+    while (!song) {
+        if (time === 0) {
+            client.user.setActivity("!help", { type: "LISTENING" });
+            time = new Date().getTime();
+        }
+        await sleep(2000);
+        song = serverQueue.songs[0];
+        if (new Date().getTime() - time > 300000) {
+            serverQueue.voiceChannel.leave();
+            queue.delete(guild.id);
+            return;
+        }
     }
 
+    time = 0;
+    client.user.setActivity("Music", { type: "PLAYING" });
     const dispatcher = serverQueue.connection
         .play(ytdl(song.url))
         .on("finish", () => {
@@ -128,4 +141,8 @@ function play(guild, song) {
         .on("error", (error) => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+}
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }

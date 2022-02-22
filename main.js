@@ -43,13 +43,13 @@ async function next(message) {
             Reddit.loadPage(words[1], message);
             break;
         case "play":
-            Music.run(command, message);
+            Music.run(command, message, client);
             break;
         case "skip":
-            Music.run(command, message);
+            Music.run(command, message, client);
             break;
         case "stop":
-            Music.run(command, message);
+            Music.run(command, message, client);
             break;
         case "quit":
             if (isBotOwner) {
