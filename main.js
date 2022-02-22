@@ -1,6 +1,7 @@
 const config = require("./config.json");
 const Discord = require("discord.js");
 const Timestamp = require("./timestamp.js");
+const Reddit = require("./reddit.js");
 const client = new Discord.Client();
 
 const token = config.token;
@@ -43,6 +44,9 @@ async function next(message) {
             } else {
                 targetChannel.send("Error only available to bot owner");
             }
+            break;
+        case "reddit":
+            Reddit.loadPage(words[1], message);
             break;
         case "help":
             if (isBotOwner) {
