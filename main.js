@@ -33,7 +33,6 @@ async function next(message) {
     if (matches === null) {
         return message.channel.send("Invalid command");
     }
-    console.log(matches);
     let command = matches[1];
     switch (command) {
         case "time":
