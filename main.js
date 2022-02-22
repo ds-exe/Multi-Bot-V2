@@ -55,6 +55,7 @@ async function next(message) {
             if (isBotOwner) {
                 message.channel.send("Shutting down").then((m) => {
                     client.destroy();
+                    process.exit(1);
                 });
             } else {
                 targetChannel.send("Error only available to bot owner");
