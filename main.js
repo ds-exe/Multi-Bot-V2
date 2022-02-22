@@ -2,12 +2,12 @@ const config = require("./config.json");
 const Discord = require("discord.js");
 const Timestamp = require("./timestamp.js");
 const Reddit = require("./reddit.js");
+const Music = require("./music");
 const client = new Discord.Client();
 
 const token = config.token;
 const prefix = config.prefix;
 const botOwner = config.owner;
-const botID = config.botID;
 
 client.on("ready", () => {
     console.log("Connected as " + client.user.tag);
@@ -16,7 +16,7 @@ client.on("ready", () => {
 });
 
 client.on("message", (message) => {
-    if (message.content.startsWith(prefix) && message.author.id !== botID) {
+    if (message.content.startsWith(prefix) && !message.author.bot) {
         next(message);
     }
 });
@@ -36,7 +36,19 @@ async function next(message) {
         case "date":
             Timestamp.generateTimestamp(targetChannel, words);
             break;
+        case "reddit":
+            Reddit.loadPage(words[1], message);
+            break;
+        case "play":
+            Music.run(command, message);
+            break;
+        case "skip":
+            Music.run(command, message);
+            break;
         case "stop":
+            Music.run(command, message);
+            break;
+        case "quit":
             if (isBotOwner) {
                 message.channel.send("Shutting down").then((m) => {
                     client.destroy();
@@ -45,15 +57,11 @@ async function next(message) {
                 targetChannel.send("Error only available to bot owner");
             }
             break;
-        case "reddit":
-            Reddit.loadPage(words[1], message);
-            break;
         case "help":
-            if (isBotOwner) {
-                targetChannel.send("Available commands:\n!time\n!date\n!stop");
-            } else {
-                targetChannel.send("Available commands:\n!time\n!date");
-            }
+            targetChannel.send(
+                "Available commands:\n!time or !date\n!reddit" +
+                    "\n!play\n!skip\n!stop"
+            );
             break;
         default:
             targetChannel.send("Syntax Error");

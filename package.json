@@ -9,9 +9,14 @@
   "author": "DS",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/opus": "^0.5.3",
     "discord.js": "^12.5.3",
     "js-levenshtein": "^1.1.6",
     "jsonfile": "^4.0.0",
-    "axios": "0.26.0"
+    "axios": "0.26.0",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "ytdl-core": "^4.10.1"
   }
 }
