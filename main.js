@@ -40,7 +40,7 @@ async function next(message) {
             Timestamp.generateTimestamp(targetChannel, words);
             break;
         case "reddit":
-            Reddit.loadPage(words[1], message);
+            Reddit.loadPage(words, message);
             break;
         case "play":
             Music.run(command, message, client);
