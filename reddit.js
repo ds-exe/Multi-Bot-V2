@@ -11,6 +11,11 @@ module.exports = {
                 "You do not have permission to use this command!"
             );
         }
+        let subs = /^[a-z_]+$/;
+        const matches = subs.exec(args[1]);
+        if (matches === null) {
+            return message.channel.send("Invalid command");
+        }
         axios
             .get(
                 `https://www.reddit.com/r/${sub}.json?limit=100&?sort=top&t=all`

@@ -26,11 +26,14 @@ async function next(message) {
     let targetChannel = client.channels.cache.get(message.channel.id);
     msg = message.content;
     msg = msg.replace(`${prefix}`, "").toLowerCase();
-
-    //words = msg.replace(/[\|&;\$%@"<>\(\)\+,]/g, "").split(" ");
     words = msg.split(" ");
-    command = words[0];
 
+    let commands = /^[a-z]+$/;
+    const matches = commands.exec(args[1]);
+    if (matches === null) {
+        return message.channel.send("Invalid command");
+    }
+    let command = matches[1];
     switch (command) {
         case "time":
         case "date":

@@ -46,6 +46,11 @@ async function execute(message, serverQueue) {
         );
     }
 
+    let youtube = /^https:\/\/youtu.be\/|https:\/\/www.youtube.com\//;
+    const matches = youtube.exec(args[1]);
+    if (matches === null) {
+        return message.channel.send("Invalid url");
+    }
     const songInfo = await ytdl.getInfo(args[1]);
     const song = {
         title: songInfo.videoDetails.title,
