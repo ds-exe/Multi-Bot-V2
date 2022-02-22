@@ -28,11 +28,12 @@ async function next(message) {
     msg = msg.replace(`${prefix}`, "").toLowerCase();
     words = msg.split(" ");
 
-    let commands = /^[a-z]+$/;
-    const matches = commands.exec(args[1]);
+    let commands = /^([a-z]+)$/;
+    const matches = commands.exec(words[0]);
     if (matches === null) {
         return message.channel.send("Invalid command");
     }
+    console.log(matches);
     let command = matches[1];
     switch (command) {
         case "time":

@@ -11,8 +11,8 @@ module.exports = {
                 "You do not have permission to use this command!"
             );
         }
-        let subs = /^[a-z_]+$/;
-        const matches = subs.exec(args[1]);
+        let subs = /^([a-z_]+)$/;
+        const matches = subs.exec(sub);
         if (matches === null) {
             return message.channel.send("Invalid command");
         }
