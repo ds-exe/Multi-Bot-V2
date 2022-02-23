@@ -1,7 +1,6 @@
 const ytdl = require("ytdl-core");
 
 const queue = new Map();
-let time = 0;
 let client = null;
 
 module.exports = {
@@ -116,6 +115,7 @@ function stop(message, serverQueue) {
 
 async function play(guild, song) {
     const serverQueue = queue.get(guild.id);
+    let time = 0;
     while (!song) {
         if (time === 0) {
             client.user.setActivity("!help", { type: "LISTENING" });
@@ -130,7 +130,6 @@ async function play(guild, song) {
         }
     }
 
-    time = 0;
     client.user.setActivity("Music", { type: "PLAYING" });
     const dispatcher = serverQueue.connection
         .play(ytdl(song.url))
