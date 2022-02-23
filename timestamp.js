@@ -53,7 +53,7 @@ function error() {
 const dateModifiers = [parseDate, parseTime, setTimezone];
 
 function setTimezone(word, date) {
-    timezoneRegex = /^(utc)([+-]{1}[0-9]{1,2})$/;
+    timezoneRegex = /^(utc)?([+-]{1}[0-9]{1,2})$/;
     if (word.indexOf("+") === -1 && word.indexOf("-") === -1) {
         return;
     }
