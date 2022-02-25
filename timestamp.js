@@ -3,6 +3,8 @@ const Discord = require("discord.js");
 const { DateTime } = require("luxon");
 
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const instructions =
+    "\nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation";
 
 const embedMessage = new Discord.MessageEmbed()
     .setColor("#00FFFF")
@@ -14,9 +16,7 @@ module.exports = {
         errored = false;
         offset = 0;
         if (words[1] === undefined || words[1] === "help") {
-            channel.send(
-                "Valid inputs: \nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation"
-            );
+            channel.send("Valid inputs:" + instructions);
             return;
         }
         words.shift();
@@ -30,9 +30,7 @@ module.exports = {
                 success = vals[1];
             });
             if (!success) {
-                channel.send(
-                    "Not following valid formats: \nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation"
-                );
+                channel.send("Not following valid formats:" + instructions);
                 return;
             }
         }
