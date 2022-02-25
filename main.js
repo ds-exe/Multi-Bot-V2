@@ -39,6 +39,8 @@ async function next(message) {
         case "date":
             Timestamp.generateTimestamp(targetChannel, words);
             break;
+        case "timezone":
+            break;
         case "reddit":
             Reddit.loadPage(words, message);
             break;

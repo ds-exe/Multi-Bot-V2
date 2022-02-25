@@ -48,7 +48,8 @@ async function execute(message, serverQueue) {
         );
     }
 
-    let youtube = /^(https:\/\/youtu.be\/|https:\/\/www.youtube.com\/)/;
+    let youtube =
+        /^(https:\/\/(www.)?youtu.be\/[0-9a-zA-Z_-]+$|https:\/\/(www.)?youtube.com\/watch\?v=[0-9a-zA-Z_-]+$)/;
     const matches = youtube.exec(args[1]);
     if (matches === null) {
         return message.channel.send("Invalid url");
