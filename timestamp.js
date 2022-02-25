@@ -56,7 +56,7 @@ function setTimezone(word, date, success) {
         const zone = zoneMatch(zoneMatches[1]);
         if (zone !== null) {
             success = true;
-            date = date.setZone(zone, opts.keepLocalTime);
+            date = date.setZone(zone, { keepLocalTime: true });
             return [date, success];
         }
     }
@@ -68,9 +68,9 @@ function setTimezone(word, date, success) {
     if (matches === null) {
         return [date, success]; // error does not match
     }
-    const zone = matches[1];
+    const zone = matches[1].toUpperCase();
     success = true;
-    date = date.setZone(zone, opts.keepLocalTime);
+    date = date.setZone(zone, { keepLocalTime: true });
     return [date, success];
 }
 
