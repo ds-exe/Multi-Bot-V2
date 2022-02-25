@@ -53,6 +53,15 @@ function error() {
 const dateModifiers = [parseDate, parseTime, setTimezone];
 
 function setTimezone(word, date) {
+    zonesRegex = /^([a-z]+)$/;
+    const zoneMatches = zonesRegex.exec(word);
+    if (zoneMatches !== null) {
+        const zone = zoneMatch(zoneMatches[1]);
+        if (zone !== null) {
+            offset = -zone * 60 * 60;
+            return;
+        }
+    }
     timezoneRegex = /^(utc)?([+-]{1}[0-9]{1,2})$/;
     if (word.indexOf("+") === -1 && word.indexOf("-") === -1) {
         return;
@@ -116,6 +125,53 @@ function parseDate(word, date) {
         errored = true;
         return;
     }
+}
+
+function zoneMatch(zone) {
+    let move = 0;
+    switch (zone) {
+        case "bst":
+            move = 1;
+            break;
+        case "cet":
+            move = 1;
+            break;
+        case "cest":
+            move = 2;
+            break;
+        case "cst":
+            move = -6;
+            break;
+        case "cdt":
+        case "ct":
+            move = -5;
+            break;
+        case "est":
+            move = -5;
+            break;
+        case "edt":
+        case "et":
+            move = -4;
+            break;
+        case "jst":
+            move = +9;
+            break;
+        case "utc":
+        case "gmt":
+            move = 0;
+            break;
+        case "pst":
+            move = -8;
+            break;
+        case "pdt":
+        case "pt":
+            move = -7;
+            break;
+        default:
+            move = null;
+            break;
+    }
+    return move;
 }
 
 function monthLength(month, year) {
