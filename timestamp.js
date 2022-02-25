@@ -1,3 +1,4 @@
+const timezones = require("./timezones.json");
 const Discord = require("discord.js");
 
 let targetChannel = null;
@@ -17,7 +18,7 @@ module.exports = {
         offset = 0;
         if (words[1] === undefined || words[1] === "help") {
             targetChannel.send(
-                "Valid inputs: \nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh`"
+                "Valid inputs: \nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation"
             );
             return;
         }
@@ -46,7 +47,7 @@ module.exports = {
 
 function error() {
     targetChannel.send(
-        "Not following valid formats: \nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh`"
+        "Not following valid formats: \nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation"
     );
 }
 
@@ -128,50 +129,10 @@ function parseDate(word, date) {
 }
 
 function zoneMatch(zone) {
-    let move = 0;
-    switch (zone) {
-        case "bst":
-            move = 1;
-            break;
-        case "cet":
-            move = 1;
-            break;
-        case "cest":
-            move = 2;
-            break;
-        case "cst":
-            move = -6;
-            break;
-        case "cdt":
-        case "ct":
-            move = -5;
-            break;
-        case "est":
-            move = -5;
-            break;
-        case "edt":
-        case "et":
-            move = -4;
-            break;
-        case "jst":
-            move = +9;
-            break;
-        case "utc":
-        case "gmt":
-            move = 0;
-            break;
-        case "pst":
-            move = -8;
-            break;
-        case "pdt":
-        case "pt":
-            move = -7;
-            break;
-        default:
-            move = null;
-            break;
+    if (zone in timezones) {
+        return timezones[zone];
     }
-    return move;
+    return null;
 }
 
 function monthLength(month, year) {
