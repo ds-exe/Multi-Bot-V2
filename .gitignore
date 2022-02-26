@@ -2,3 +2,4 @@
 json/
 node_modules/
 config.json
+TimezonesDatabase.db

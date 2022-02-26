@@ -1,6 +1,7 @@
 const timezones = require("./timezones.json");
 const { DateTime } = require("luxon");
 const Embeds = require("./embeds.js");
+const { printDataBase, getTimezone } = require("./SQLDataBase.js");
 
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const instructions =
@@ -8,8 +9,6 @@ const instructions =
 
 module.exports = {
     generateTimestamp: (channel, words) => {
-        errored = false;
-        offset = 0;
         if (words[1] === undefined || words[1] === "help") {
             channel.send("Valid inputs:" + instructions);
             return;
@@ -30,13 +29,13 @@ module.exports = {
             }
         }
         let unixTime = parseInt(date.toSeconds());
-        embedMessage.setDescription(`<t:${unixTime}:F>`);
-        embedMessage.fields = [];
-        embedMessage.addFields({
+        Embeds.timestampEmbed.setDescription(`<t:${unixTime}:F>`);
+        Embeds.timestampEmbed.fields = [];
+        Embeds.timestampEmbed.addFields({
             name: `Copy Link:`,
             value: `\\<t:${unixTime}:F>`,
         });
-        channel.send(Embed.timestampEmbed);
+        channel.send(Embeds.timestampEmbed);
     },
 };
 
@@ -54,9 +53,6 @@ function setTimezone(word, date, success) {
         }
     }
     timezoneRegex = /^(utc[+-]{1}[0-9]{1,2})$/;
-    if (word.indexOf("+") === -1 && word.indexOf("-") === -1) {
-        return [date, success];
-    }
     const matches = timezoneRegex.exec(word);
     if (matches === null) {
         return [date, success]; // error does not match
@@ -69,9 +65,6 @@ function setTimezone(word, date, success) {
 
 function parseTime(word, date, success) {
     timeRegex = /^([0-9]{1,2}):([0-9]{2})$/;
-    if (word.indexOf(":") === -1) {
-        return [date, success];
-    }
     const matches = timeRegex.exec(word);
     if (matches === null) {
         return [date, success]; // error does not match
@@ -87,9 +80,6 @@ function parseTime(word, date, success) {
 
 function parseDate(word, date, success) {
     dateRegex = /^([0-9]{1,2})\/([0-9]{1,2})\/?([0-9]{4})?$/;
-    if (word.indexOf("/") === -1) {
-        return [date, success];
-    }
     const matches = dateRegex.exec(word);
     if (matches === null) {
         return [date, success]; // error does not match

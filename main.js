@@ -1,6 +1,7 @@
 const config = require("./config.json");
 const Discord = require("discord.js");
 const Timestamp = require("./timestamp.js");
+const { setTimezone, open, close } = require("./SQLDataBase.js");
 const Reddit = require("./reddit.js");
 const Music = require("./music");
 const Embeds = require("./embeds.js");
@@ -14,6 +15,7 @@ client.on("ready", () => {
     console.log("Connected as " + client.user.tag);
     //Setting activity: "Now listening to !help"
     client.user.setActivity("!help", { type: "LISTENING" });
+    open();
 });
 
 client.on("message", (message) => {
@@ -41,6 +43,7 @@ async function next(message) {
             Timestamp.generateTimestamp(targetChannel, words);
             break;
         case "timezone":
+            setTimezone(message.author.id, words[1]);
             break;
         case "reddit":
             Reddit.loadPage(words, message);
@@ -57,11 +60,10 @@ async function next(message) {
         case "quit":
             if (isBotOwner) {
                 message.channel.send("Shutting down").then((m) => {
+                    close();
                     client.destroy();
                     process.exit(1);
                 });
-            } else {
-                targetChannel.send("Error only available to bot owner");
             }
             break;
         case "help":

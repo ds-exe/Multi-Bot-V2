@@ -4,7 +4,7 @@ exports.helpEmbed = new Discord.MessageEmbed()
     .setColor("#0099ff")
     .setTitle("🍑 UwU Bot")
     .setDescription("Be Gentle Senpai")
-    .setThumbnail("https://i.imgur.com/nXxO5F3.png")
+    .setThumbnail("https://i.imgur.com/RwkB33I.png")
     .addFields({
         name: "UwU Commands Available Here 🔎",
         value: "```📌!time or !date\n📌!timezone\n📌!reddit\n📌!play\n📌!skip\n📌!stop```",
