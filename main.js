@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 const Timestamp = require("./timestamp.js");
 const Reddit = require("./reddit.js");
 const Music = require("./music");
+const Embeds = require("./embeds.js");
 const client = new Discord.Client();
 
 const token = config.token;
@@ -64,10 +65,7 @@ async function next(message) {
             }
             break;
         case "help":
-            targetChannel.send(
-                "Available commands:\n!time or !date\n!reddit" +
-                    "\n!play\n!skip\n!stop"
-            );
+            targetChannel.send(Embeds.helpEmbed);
             break;
         default:
             targetChannel.send("Syntax Error");

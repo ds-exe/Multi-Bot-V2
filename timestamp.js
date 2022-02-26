@@ -1,15 +1,10 @@
 const timezones = require("./timezones.json");
-const Discord = require("discord.js");
 const { DateTime } = require("luxon");
+const Embeds = require("./embeds.js");
 
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const instructions =
     "\nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation";
-
-const embedMessage = new Discord.MessageEmbed()
-    .setColor("#00FFFF")
-    .setTitle("Local time:")
-    .setDescription(`<t:0:F>`);
 
 module.exports = {
     generateTimestamp: (channel, words) => {
@@ -41,7 +36,7 @@ module.exports = {
             name: `Copy Link:`,
             value: `\\<t:${unixTime}:F>`,
         });
-        channel.send(embedMessage);
+        channel.send(Embed.timestampEmbed);
     },
 };
 
