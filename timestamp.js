@@ -8,14 +8,15 @@ const instructions =
     "\nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation";
 
 module.exports = {
-    generateTimestamp: (message, words) => {
+    generateTimestamp: async (message, words) => {
         if (words[1] === undefined || words[1] === "help") {
             message.channel.send("Valid inputs:" + instructions);
             return;
         }
         words.shift();
         let date = DateTime.utc();
-        getTimezone(message.author.id);
+        tz = await getTimezone(message.author.id);
+        date = date.setZone(tz, { keepLocalTime: true });
         date = date.set({ hour: 0, minute: 0, second: 0 });
         for (let word of words) {
             let success = false;

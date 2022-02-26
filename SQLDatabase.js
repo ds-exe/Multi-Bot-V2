@@ -33,7 +33,19 @@ module.exports = {
     },
 
     getTimezone: (userID) => {
-        //printDataBase();
+        var query = `SELECT timezone FROM timezones WHERE userID = '${userID}'`;
+        return new Promise((resolve, reject) => {
+            db.all(query, function (err, rows) {
+                if (err) {
+                    reject(err);
+                }
+                if (rows.length > 0) {
+                    resolve(rows[0].timezone);
+                } else {
+                    resolve("utc+0");
+                }
+            });
+        });
     },
 
     createDataBase: (name) => {
