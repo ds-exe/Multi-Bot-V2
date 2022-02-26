@@ -1,20 +1,21 @@
 const timezones = require("./timezones.json");
 const { DateTime } = require("luxon");
 const Embeds = require("./embeds.js");
-const { printDataBase, getTimezone } = require("./SQLDataBase.js");
+const { getTimezone } = require("./SQLDataBase.js");
 
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const instructions =
     "\nTime in form: `hh:mm`\nDate in form: `dd/mm` or `dd/mm/yyyy`\nOptional timezone specifier: `UTC{+/-}hh` or abbreviation";
 
 module.exports = {
-    generateTimestamp: (channel, words) => {
+    generateTimestamp: (message, words) => {
         if (words[1] === undefined || words[1] === "help") {
-            channel.send("Valid inputs:" + instructions);
+            message.channel.send("Valid inputs:" + instructions);
             return;
         }
         words.shift();
         let date = DateTime.utc();
+        getTimezone(message.author.id);
         date = date.set({ hour: 0, minute: 0, second: 0 });
         for (let word of words) {
             let success = false;
@@ -24,7 +25,9 @@ module.exports = {
                 success = vals[1];
             });
             if (!success) {
-                channel.send("Not following valid formats:" + instructions);
+                message.channel.send(
+                    "Not following valid formats:" + instructions
+                );
                 return;
             }
         }
@@ -35,7 +38,7 @@ module.exports = {
             name: `Copy Link:`,
             value: `\\<t:${unixTime}:F>`,
         });
-        channel.send(Embeds.timestampEmbed);
+        message.channel.send(Embeds.timestampEmbed);
     },
 };
 

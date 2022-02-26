@@ -40,7 +40,7 @@ async function next(message) {
     switch (command) {
         case "time":
         case "date":
-            Timestamp.generateTimestamp(targetChannel, words);
+            Timestamp.generateTimestamp(message, words);
             break;
         case "timezone":
             setTimezone(message.author.id, words[1]);
