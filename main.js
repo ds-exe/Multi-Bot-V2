@@ -1,7 +1,7 @@
 const config = require("./config.json");
 const Discord = require("discord.js");
 const Timestamp = require("./timestamp.js");
-const { setTimezone, open, close } = require("./SQLDataBase.js");
+const { setTimezone, getTimezone, open, close } = require("./SQLDataBase.js");
 const Reddit = require("./reddit.js");
 const Music = require("./music");
 const Embeds = require("./embeds.js");
@@ -43,7 +43,14 @@ async function next(message) {
             Timestamp.generateTimestamp(message, words);
             break;
         case "timezone":
-            setTimezone(message.author.id, words[1]);
+            if (words[1] === undefined) {
+                message.channel.send(
+                    "Your timezone is: " +
+                        (await getTimezone(message.author.id))
+                );
+            } else {
+                setTimezone(message, words[1]);
+            }
             break;
         case "reddit":
             Reddit.loadPage(words, message);
