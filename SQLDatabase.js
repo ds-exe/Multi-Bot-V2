@@ -86,5 +86,6 @@ module.exports = {
         db.close((err) => {
             if (err) return console.error(err.message);
         });
+        console.log("shutdown successful");
     },
 };
