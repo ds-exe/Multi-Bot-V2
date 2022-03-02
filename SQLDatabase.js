@@ -65,6 +65,16 @@ module.exports = {
         });
     },
 
+    hasPermissionMulti: (roles) => {
+        out = false;
+        roles.forEach((role) => {
+            if (hasPermission(role.id)) {
+                out = true;
+            }
+        });
+        return out;
+    },
+
     createDataBase: (name) => {
         new sqlite3.Database(`${name}.db`);
         console.log(`Successfully created new database called ${name}`);
@@ -89,3 +99,16 @@ module.exports = {
         console.log("shutdown successful");
     },
 };
+
+function hasPermission(id) {
+    if (id === "379325076740374528") {
+        return true;
+    }
+    if (id === "279437266491801602") {
+        return true;
+    }
+    if (id === "945331443435982868") {
+        return true;
+    }
+    return false;
+}

@@ -6,11 +6,7 @@ let client = null;
 module.exports = {
     run: async (command, message, mainClient) => {
         client = mainClient;
-        if (
-            !message.member.roles.cache.has("379325076740374528") &&
-            !message.member.roles.cache.has("279437266491801602") &&
-            !message.member.roles.cache.has("945331443435982868")
-        ) {
+        if (!hasPermissionMulti(message.member.roles.cache)) {
             return message.channel.send(
                 "You do not have permission to use this command!"
             );
