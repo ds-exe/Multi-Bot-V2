@@ -4,6 +4,7 @@ const Timestamp = require("./timestamp.js");
 const { setTimezone, getTimezone, open, close } = require("./SQLDataBase.js");
 const Reddit = require("./reddit.js");
 const Music = require("./music");
+const Permissions = require("./permissions.js");
 const Embeds = require("./embeds.js");
 const client = new Discord.Client();
 
@@ -37,6 +38,7 @@ async function next(message) {
     if (matches === null) {
         return message.channel.send("Invalid command");
     }
+    words.shift();
     let command = matches[1];
     switch (command) {
         case "time":
@@ -44,13 +46,13 @@ async function next(message) {
             Timestamp.generateTimestamp(message, words);
             break;
         case "timezone":
-            if (words[1] === undefined) {
+            if (words[0] === undefined) {
                 message.channel.send(
                     "Your timezone is: " +
                         (await getTimezone(message.author.id))
                 );
             } else {
-                setTimezone(message, words[1]);
+                setTimezone(message, words[0]);
             }
             break;
         case "reddit":
@@ -64,6 +66,9 @@ async function next(message) {
             break;
         case "stop":
             Music.run(command, message, client);
+            break;
+        case "perms":
+            Permissions.run(message, words);
             break;
         case "quit":
             if (isBotOwner) {

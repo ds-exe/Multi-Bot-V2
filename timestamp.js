@@ -9,11 +9,10 @@ const instructions =
 
 module.exports = {
     generateTimestamp: async (message, words) => {
-        if (words[1] === undefined || words[1] === "help") {
+        if (words[0] === undefined || words[0] === "help") {
             message.channel.send("Valid inputs:" + instructions);
             return;
         }
-        words.shift();
         let date = DateTime.utc();
         tz = await getTimezone(message.author.id);
         date = date.setZone(tz, { keepLocalTime: true });

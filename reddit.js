@@ -12,17 +12,17 @@ module.exports = {
             );
         }
         let subs = /^([a-z_]+)$/;
-        if (sub[1] === undefined || sub[1] === "help") {
+        if (sub[0] === undefined || sub[0] === "help") {
             message.channel.send("Valid inputs: \n!reddit {desired subreddit}");
             return;
         }
-        const matches = subs.exec(sub[1]);
+        const matches = subs.exec(sub[0]);
         if (matches === null) {
             return message.channel.send("Invalid subreddit");
         }
         axios
             .get(
-                `https://www.reddit.com/r/${sub[1]}.json?limit=100&?sort=top&t=all`
+                `https://www.reddit.com/r/${matches[1]}.json?limit=100&?sort=top&t=all`
             )
             .then((response) =>
                 response.data.data.children.map((v) => v.data.url)
