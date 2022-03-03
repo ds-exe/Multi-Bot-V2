@@ -13,12 +13,12 @@ module.exports = {
                 "This command requires administrator permissions"
             );
         }
-        let commands = /^([a-z]+)$/;
+        const commands = /^([a-z]+)$/;
         const matches = commands.exec(words[0]);
         if (matches === null) {
             return message.channel.send("Invalid command");
         }
-        let command = matches[1];
+        const command = matches[1];
         words.shift();
         switch (command) {
             case "help":
@@ -57,7 +57,7 @@ function deny(message, words) {
 }
 
 function getRole(message, words) {
-    let roleName = /^([a-z _-]+)$/;
+    const roleName = /^([a-z _-]+)$/;
     const matches = roleName.exec(words);
     if (matches !== null) {
         role = message.channel.guild.roles.cache.find(
@@ -65,7 +65,7 @@ function getRole(message, words) {
         );
         return role;
     }
-    let roleId = /^([0-9]+)$/;
+    const roleId = /^([0-9]+)$/;
     const matches2 = roleId.exec(words);
     if (matches2 !== null) {
         role = message.channel.guild.roles.cache.find(

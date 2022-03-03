@@ -45,7 +45,7 @@ async function execute(message, serverQueue) {
         );
     }
 
-    let youtube =
+    const youtube =
         /^(https:\/\/(www.)?youtu.be\/[0-9a-zA-Z_-]+$|https:\/\/(www.)?youtube.com\/watch\?v=[0-9a-zA-Z_-]+$)/;
     const matches = youtube.exec(args[1]);
     if (matches === null) {
@@ -72,7 +72,7 @@ async function execute(message, serverQueue) {
         queueContruct.songs.push(song);
 
         try {
-            var connection = await voiceChannel.join();
+            let connection = await voiceChannel.join();
             queueContruct.connection = connection;
             play(message.guild, queueContruct.songs[0]);
         } catch (err) {

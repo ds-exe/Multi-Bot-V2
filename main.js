@@ -26,20 +26,20 @@ client.on("message", (message) => {
 });
 
 async function next(message) {
-    let isBotOwner = message.author.id === botOwner;
-    let targetChannel = client.channels.cache.get(message.channel.id);
+    const isBotOwner = message.author.id === botOwner;
+    const targetChannel = client.channels.cache.get(message.channel.id);
     msg = message.content;
     msg = msg.replace(`${prefix}`, "").toLowerCase();
     words = msg.split(" ");
     console.log(message.author.id, words);
 
-    let commands = /^([a-z]+)$/;
+    const commands = /^([a-z]+)$/;
     const matches = commands.exec(words[0]);
     if (matches === null) {
         return message.channel.send("Invalid command");
     }
     words.shift();
-    let command = matches[1];
+    const command = matches[1];
     switch (command) {
         case "time":
         case "date":

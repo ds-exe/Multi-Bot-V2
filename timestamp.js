@@ -31,7 +31,7 @@ module.exports = {
                 return;
             }
         }
-        let unixTime = parseInt(date.toSeconds());
+        const unixTime = parseInt(date.toSeconds());
         Embeds.timestampEmbed.setDescription(`<t:${unixTime}:F>`);
         Embeds.timestampEmbed.fields = [];
         Embeds.timestampEmbed.addFields({

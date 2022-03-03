@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 const timezones = require("./timezones.json");
 const { owner } = require("./config.json");
-var db = null;
+let db = null;
 
 module.exports = {
     open: () => {
@@ -31,11 +31,11 @@ module.exports = {
 
     setTimezone: (message, timezone) => {
         zonesRegex = /^([a-z]+)$/;
-        let userID = message.author.id;
+        const userID = message.author.id;
         const zoneMatches = zonesRegex.exec(timezone);
         if (zoneMatches !== null) {
             if (zoneMatches[1] in timezones) {
-                let zone = timezones[zoneMatches[1]];
+                const zone = timezones[zoneMatches[1]];
                 db.run(
                     `REPLACE INTO timezones (userID, timezone) VALUES ('${userID}', '${zone}')`
                 );
@@ -57,7 +57,7 @@ module.exports = {
     },
 
     getTimezone: (userID) => {
-        var query = `SELECT timezone FROM timezones WHERE userID = '${userID}'`;
+        const query = `SELECT timezone FROM timezones WHERE userID = '${userID}'`;
         return new Promise((resolve, reject) => {
             db.all(query, function (err, rows) {
                 if (err) {
@@ -88,14 +88,11 @@ module.exports = {
 
     hasPermissionMulti: (message, roles) => {
         return new Promise((resolve, reject) => {
-            if (message.author.id === owner) {
-                resolve(true);
-            }
-            var query = `SELECT * FROM permissions WHERE roleID = 'n'`;
-            roles.forEach((role) => {
-                query += ` OR roleID = '${role.id}'`;
-            });
-            db.all(query, function (err, rows) {
+            const roleQuery = roles.map((role) => role.id);
+            const query = `SELECT * FROM permissions WHERE roleID in (${roleQuery
+                .map(() => "?")
+                .join(",")})`;
+            db.all(query, roleQuery, function (err, rows) {
                 if (err) {
                     reject(err);
                 }
