@@ -91,12 +91,10 @@ module.exports = {
             roles.forEach((role) => {
                 query += ` OR roleID = '${role.id}'`;
             });
-            console.log(query);
             db.all(query, function (err, rows) {
                 if (err) {
                     reject(err);
                 }
-                console.log(rows);
                 if (rows.length > 0) {
                     resolve(true);
                 } else {
