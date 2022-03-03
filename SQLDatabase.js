@@ -1,5 +1,6 @@
 const sqlite3 = require("sqlite3").verbose();
 const timezones = require("./timezones.json");
+const { owner } = require("./config.json");
 var db = null;
 
 module.exports = {
@@ -85,8 +86,11 @@ module.exports = {
         return;
     },
 
-    hasPermissionMulti: (roles) => {
+    hasPermissionMulti: (message, roles) => {
         return new Promise((resolve, reject) => {
+            if (message.author.id === owner) {
+                resolve(true);
+            }
             var query = `SELECT * FROM permissions WHERE roleID = 'n'`;
             roles.forEach((role) => {
                 query += ` OR roleID = '${role.id}'`;

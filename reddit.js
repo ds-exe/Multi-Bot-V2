@@ -3,7 +3,7 @@ const { hasPermissionMulti } = require("./SQLDataBase.js");
 
 module.exports = {
     loadPage: async (sub, message) => {
-        if (!(await hasPermissionMulti(message.member.roles.cache))) {
+        if (!(await hasPermissionMulti(message, message.member.roles.cache))) {
             return message.channel.send(
                 "You do not have permission to use this command!"
             );
