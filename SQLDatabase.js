@@ -86,13 +86,24 @@ module.exports = {
     },
 
     hasPermissionMulti: (roles) => {
-        out = false;
-        roles.forEach((role) => {
-            if (hasPermission(role.id)) {
-                out = true;
-            }
+        return new Promise((resolve, reject) => {
+            var query = `SELECT * FROM permissions WHERE roleID = 'n'`;
+            roles.forEach((role) => {
+                query += ` OR roleID = '${role.id}'`;
+            });
+            console.log(query);
+            db.all(query, function (err, rows) {
+                if (err) {
+                    reject(err);
+                }
+                console.log(rows);
+                if (rows.length > 0) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
         });
-        return out;
     },
 
     createDataBase: (name) => {
@@ -131,16 +142,3 @@ module.exports = {
         console.log("shutdown successful");
     },
 };
-
-function hasPermission(id) {
-    if (id === "379325076740374528") {
-        return true;
-    }
-    if (id === "279437266491801602") {
-        return true;
-    }
-    if (id === "945331443435982868") {
-        return true;
-    }
-    return false;
-}
