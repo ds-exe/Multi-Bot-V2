@@ -5,7 +5,7 @@ var db = null;
 module.exports = {
     open: () => {
         db = new sqlite3.Database(
-            "./TimezonesDatabase.db",
+            "./MultiDatabase.db",
             sqlite3.OPEN_READWRITE,
             (err) => {
                 if (err) return console.error(err.message);
@@ -16,6 +16,12 @@ module.exports = {
 
         db.run(
             "CREATE TABLE IF NOT EXISTS timezones(userID PRIMARY KEY, timezone)"
+        );
+        (err) => {
+            if (err) return console.error(err.message);
+        };
+        db.run(
+            "CREATE TABLE IF NOT EXISTS permissions(roleID PRIMARY KEY, guildID)"
         );
         (err) => {
             if (err) return console.error(err.message);
@@ -65,6 +71,20 @@ module.exports = {
         });
     },
 
+    allowRole: (message, roleId, guildId) => {
+        db.run(
+            `REPLACE INTO permissions (roleID, guildID) VALUES ('${roleId}', '${guildId}')`
+        );
+        message.channel.send("Successfully added permissions");
+        return;
+    },
+
+    denyRole: (message, roleId, guildId) => {
+        db.run(`DELETE FROM permissions WHERE roleID = '${roleId}'`);
+        message.channel.send("Successfully removed permissions");
+        return;
+    },
+
     hasPermissionMulti: (roles) => {
         out = false;
         roles.forEach((role) => {
@@ -80,8 +100,20 @@ module.exports = {
         console.log(`Successfully created new database called ${name}`);
     },
 
-    printDataBase: () => {
+    printTimezoneDataBase: () => {
         const sqlRead = "SELECT * FROM timezones";
+
+        db.all(sqlRead, [], (err, rows) => {
+            if (err) return console.error(err.message);
+
+            rows.forEach((row) => {
+                console.log(row);
+            });
+        });
+    },
+
+    printPermissionDataBase: () => {
+        const sqlRead = "SELECT * FROM permissions";
 
         db.all(sqlRead, [], (err, rows) => {
             if (err) return console.error(err.message);

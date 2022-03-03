@@ -1,19 +1,6 @@
 const Discord = require("discord.js");
 const Embeds = require("./embeds.js");
-const { getTimezone } = require("./SQLDataBase.js");
-
-// //console.log(message.author);
-// console.log(
-//     message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)
-// );
-// console.log(message.channel.guild.roles);
-// bob = message.channel.guild.roles.cache.find(
-//     (role) => role.name.toLowerCase() === `${rolehere}`
-// );
-// if (bob === undefined) {
-//     //do x
-// }
-// //message.channel.guild.serverOwner
+const { allowRole, denyRole } = require("./SQLDataBase.js");
 
 module.exports = {
     run: (message, words) => {
@@ -55,7 +42,7 @@ function allow(message, words) {
     if (role === undefined) {
         return message.channel.send("Invalid role");
     } else {
-        //console.log("valid roll");
+        allowRole(message, role.id.toLowerCase(), role.guild.id.toLowerCase());
     }
 }
 
@@ -65,7 +52,7 @@ function deny(message, words) {
     if (role === undefined) {
         return message.channel.send("Invalid role");
     } else {
-        //console.log("valid roll");
+        denyRole(message, role.id.toLowerCase(), role.guild.id.toLowerCase());
     }
 }
 
