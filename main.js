@@ -31,7 +31,7 @@ async function next(message) {
     msg = message.content;
     msg = msg.replace(`${prefix}`, "").toLowerCase();
     words = msg.split(" ");
-    console.log(message.author.id, msg.split(" "));
+    console.log(message.author.id, message.content.split(" "));
 
     const commands = /^([a-z]+)$/;
     const matches = commands.exec(words[0]);
