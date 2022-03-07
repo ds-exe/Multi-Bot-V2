@@ -46,7 +46,7 @@ async function execute(message, serverQueue) {
     }
 
     const youtube =
-        /^(https:\/\/(www.)?youtu.be\/[0-9a-zA-Z_-]+$|https:\/\/(www.)?youtube.com\/watch\?v=[0-9a-zA-Z_-]+$)/;
+        /^(https:\/\/(www.)?youtu.be\/[0-9a-zA-Z_-]+((&|\?)list=[0-9a-zA-Z_-]+(&[a-z_]+=[0-9]+)?)?$|https:\/\/(www.)?youtube.com\/watch\?v=[0-9a-zA-Z_-]+((&|\?)list=[0-9a-zA-Z_-]+(&[a-z_]+=[0-9]+)?)?$)/;
     const matches = youtube.exec(args[1]);
     if (matches === null) {
         return message.channel.send("Invalid url");
