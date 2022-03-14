@@ -95,6 +95,7 @@ function skip(message, serverQueue) {
         );
     if (!serverQueue)
         return message.channel.send("There is no song that I could skip!");
+    message.react("👍");
     serverQueue.connection.dispatcher.end();
 }
 
@@ -108,6 +109,7 @@ function stop(message, serverQueue) {
         return message.channel.send("There is no song that I could stop!");
 
     serverQueue.songs = [];
+    message.react("👍");
     serverQueue.connection.dispatcher.end();
 }
 

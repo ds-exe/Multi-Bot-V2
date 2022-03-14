@@ -9,7 +9,7 @@ exports.helpEmbed = new Discord.MessageEmbed()
         name: "UwU Commands Available Here 🔎",
         value: "```📌!time or !date\n📌!timezone\n📌!reddit\n📌!play\n📌!skip\n📌!stop```",
     })
-    .setImage("https://i.imgur.com/vYZiKRl.jpeg")
+    .setImage("https://i.imgur.com/twtmzmr.png")
     .setFooter(
         "BOT made by @ds#8460",
         "https://cdn.discordapp.com/avatars/74968333413257216/3bf0047dd6175e5b623ce6d5ade1a76e.webp"
