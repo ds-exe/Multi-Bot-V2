@@ -131,11 +131,11 @@ async function play(guild, song) {
     client.user.setActivity("Music", { type: "PLAYING" });
     const dispatcher = serverQueue.connection
         .play(ytdl(song.url))
-        .on("finish", () => {
+        .once("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
         })
-        .on("error", (error) => console.error(error));
+        .once("error", (error) => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
 }
