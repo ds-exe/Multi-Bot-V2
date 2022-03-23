@@ -133,8 +133,10 @@ function leave(message, serverQueue) {
         return message.channel.send("There is no song that I could stop!");
 
     if (serverQueue.songs[0]) {
-        serverQueue.songs = [];
-        serverQueue.connection.dispatcher.end();
+        if (serverQueue.connection.dispatcher !== null) {
+            serverQueue.songs = [];
+            serverQueue.connection.dispatcher.end();
+        }
     }
     message.react("👍");
     serverQueue.voiceChannel.leave();
@@ -163,7 +165,7 @@ async function play(guild, song) {
 
     client.user.setActivity("Music", { type: "PLAYING" });
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url))
+        .play(ytdl(song.url, { filter: "audioonly" }), { type: "unknown" })
         .once("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
