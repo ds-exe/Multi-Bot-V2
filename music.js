@@ -132,6 +132,10 @@ function leave(message, serverQueue) {
     if (!serverQueue)
         return message.channel.send("There is no song that I could stop!");
 
+    if (serverQueue.songs[0]) {
+        serverQueue.songs = [];
+        serverQueue.connection.dispatcher.end();
+    }
     message.react("👍");
     serverQueue.voiceChannel.leave();
     queue.delete(message.guild.id);
