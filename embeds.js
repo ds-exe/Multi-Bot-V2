@@ -7,7 +7,7 @@ exports.helpEmbed = new Discord.MessageEmbed()
     .setThumbnail("https://i.imgur.com/RwkB33I.png")
     .addFields({
         name: "UwU Commands Available Here 🔎",
-        value: "```📌!time or !date\n📌!timezone\n📌!reddit\n📌!play\n📌!skip\n📌!stop```",
+        value: "```📌!time or !date\n📌!timezone\n📌!reddit\n📌!play\n📌!skip\n📌!stop\n📌!leave\n📌!perms```",
     })
     .setImage("https://i.imgur.com/twtmzmr.png")
     .setFooter(

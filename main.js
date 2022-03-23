@@ -67,6 +67,9 @@ async function next(message) {
         case "stop":
             Music.run(command, message, client);
             break;
+        case "leave":
+            Music.run(command, message, client);
+            break;
         case "perms":
             Permissions.run(message, words);
             break;

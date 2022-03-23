@@ -30,7 +30,7 @@ module.exports = {
                 deny(message, words);
                 break;
             default:
-                message.channel.send("Syntax Error");
+                message.channel.send("!perms allow/deny {role id/role name}");
                 break;
         }
     },

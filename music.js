@@ -23,6 +23,9 @@ module.exports = {
             case "stop":
                 stop(message, serverQueue);
                 break;
+            case "leave":
+                leave(message, serverQueue);
+                break;
             default:
                 message.channel.send("You need to enter a valid command!");
                 break;
@@ -120,6 +123,20 @@ function stop(message, serverQueue) {
     serverQueue.connection.dispatcher.end();
 }
 
+function leave(message, serverQueue) {
+    if (!message.member.voice.channel)
+        return message.channel.send(
+            "You have to be in a voice channel to stop the music!"
+        );
+
+    if (!serverQueue)
+        return message.channel.send("There is no song that I could stop!");
+
+    message.react("👍");
+    serverQueue.voiceChannel.leave();
+    queue.delete(message.guild.id);
+}
+
 async function play(guild, song) {
     const serverQueue = queue.get(guild.id);
     let time = 0;
@@ -127,6 +144,9 @@ async function play(guild, song) {
         if (time === 0) {
             client.user.setActivity("!help", { type: "LISTENING" });
             time = new Date().getTime();
+        }
+        if (!queue.get(guild.id)) {
+            return;
         }
         await sleep(2000);
         song = serverQueue.songs[0];
