@@ -1,5 +1,5 @@
 const ytdl = require("ytdl-core");
-const { hasPermissionMulti } = require("./SQLDataBase.js");
+const { hasPermissionRole, hasPermissionUser } = require("./SQLDataBase.js");
 
 const queue = new Map();
 let client = null;
@@ -7,7 +7,10 @@ let client = null;
 module.exports = {
     run: async (command, message, mainClient) => {
         client = mainClient;
-        if (!(await hasPermissionMulti(message, message.member.roles.cache))) {
+        if (
+            !(await hasPermissionRole(message, message.member.roles.cache)) ||
+            !(await hasPermissionUser(message, message.author.id))
+        ) {
             return message.channel.send(
                 "You do not have permission to use this command!"
             );

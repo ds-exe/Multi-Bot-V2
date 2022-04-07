@@ -1,9 +1,12 @@
 const axios = require("axios");
-const { hasPermissionMulti } = require("./SQLDataBase.js");
+const { hasPermissionRole, hasPermissionUser } = require("./SQLDataBase.js");
 
 module.exports = {
     loadPage: async (sub, message) => {
-        if (!(await hasPermissionMulti(message, message.member.roles.cache))) {
+        if (
+            !(await hasPermissionRole(message, message.member.roles.cache)) ||
+            !(await hasPermissionUser(message, message.author.id))
+        ) {
             return message.channel.send(
                 "You do not have permission to use this command!"
             );

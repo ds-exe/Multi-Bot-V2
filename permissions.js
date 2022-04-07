@@ -1,6 +1,11 @@
 const Discord = require("discord.js");
 const Embeds = require("./embeds.js");
-const { allowRole, denyRole } = require("./SQLDataBase.js");
+const {
+    allowRole,
+    denyRole,
+    allowUser,
+    denyUser,
+} = require("./SQLDataBase.js");
 
 module.exports = {
     run: (message, words) => {
@@ -23,20 +28,28 @@ module.exports = {
         switch (command) {
             case "help":
                 break;
-            case "allow":
-                allow(message, words);
+            case "allowRole":
+                roleAllow(message, words);
                 break;
-            case "deny":
-                deny(message, words);
+            case "denyRole":
+                roleDeny(message, words);
+                break;
+            case "allowUser":
+                userAllow(message, words);
+                break;
+            case "denyUser":
+                userDeny(message, words);
                 break;
             default:
-                message.channel.send("!perms allow/deny {role id/role name}");
+                message.channel.send(
+                    "!perms allowRole/denyRole {role id/role name}\n!perms allowUser/denyUser {user id}"
+                );
                 break;
         }
     },
 };
 
-function allow(message, words) {
+function roleAllow(message, words) {
     words = words.join(" ");
     role = getRole(message, words);
     if (role === undefined) {
@@ -46,13 +59,33 @@ function allow(message, words) {
     }
 }
 
-function deny(message, words) {
+function roleDeny(message, words) {
     words = words.join(" ");
     role = getRole(message, words);
     if (role === undefined) {
         return message.channel.send("Invalid role");
     } else {
         denyRole(message, role.id.toLowerCase(), role.guild.id.toLowerCase());
+    }
+}
+
+function userAllow(message, words) {
+    words = words.join(" ");
+    user = getUser(message, words);
+    if (user === undefined) {
+        return message.channel.send("Invalid user");
+    } else {
+        allowUser(message, user.id.toLowerCase(), user.guild.id.toLowerCase());
+    }
+}
+
+function userDeny(message, words) {
+    words = words.join(" ");
+    user = getUser(message, words);
+    if (user === undefined) {
+        return message.channel.send("Invalid user");
+    } else {
+        denyUser(message, user.id.toLowerCase(), user.guild.id.toLowerCase());
     }
 }
 
@@ -72,6 +105,18 @@ function getRole(message, words) {
             (role) => role.id.toLowerCase() === words
         );
         return role;
+    }
+    return undefined;
+}
+
+function getUser(message, words) {
+    const userId = /^([0-9]+)$/;
+    const matches2 = userId.exec(words);
+    if (matches2 !== null) {
+        user = message.channel.guild.users.cache.find(
+            (user) => user.id.toLowerCase() === words
+        );
+        return user;
     }
     return undefined;
 }

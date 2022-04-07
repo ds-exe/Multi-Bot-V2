@@ -27,6 +27,12 @@ module.exports = {
         (err) => {
             if (err) return console.error(err.message);
         };
+        db.run(
+            "CREATE TABLE IF NOT EXISTS permissionsUser(userID PRIMARY KEY, guildID)"
+        );
+        (err) => {
+            if (err) return console.error(err.message);
+        };
     },
 
     setTimezone: (message, timezone) => {
@@ -86,13 +92,43 @@ module.exports = {
         return;
     },
 
-    hasPermissionMulti: (message, roles) => {
+    hasPermissionRole: (message, roles) => {
         return new Promise((resolve, reject) => {
             const roleQuery = roles.map((role) => role.id);
             const query = `SELECT * FROM permissions WHERE roleID in (${roleQuery
                 .map(() => "?")
                 .join(",")})`;
             db.all(query, roleQuery, function (err, rows) {
+                if (err) {
+                    reject(err);
+                }
+                if (rows.length > 0) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    },
+
+    allowUser: (message, userId, guildId) => {
+        db.run(
+            `REPLACE INTO permissionsUser (userID, guildID) VALUES ('${userId}', '${guildId}')`
+        );
+        message.channel.send("Successfully added permissions");
+        return;
+    },
+
+    denyUser: (message, userId, guildId) => {
+        db.run(`DELETE FROM permissionsUser WHERE userID = '${userId}'`);
+        message.channel.send("Successfully removed permissions");
+        return;
+    },
+
+    hasPermissionUser: (message, userId) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM permissionsUser WHERE userID = '${userId}'`;
+            db.all(query, function (err, rows) {
                 if (err) {
                     reject(err);
                 }
