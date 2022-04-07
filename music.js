@@ -103,7 +103,12 @@ function skip(message, serverQueue) {
         return message.channel.send("There is no song that I could stop!");
     }
     message.react("👍");
-    serverQueue.connection.dispatcher.end();
+    if (serverQueue.connection.dispatcher !== null) {
+        serverQueue.connection.dispatcher.end();
+    } else {
+        serverQueue.voiceChannel.leave();
+        queue.delete(message.guild.id);
+    }
 }
 
 function stop(message, serverQueue) {
@@ -120,7 +125,12 @@ function stop(message, serverQueue) {
     }
     serverQueue.songs = [];
     message.react("👍");
-    serverQueue.connection.dispatcher.end();
+    if (serverQueue.connection.dispatcher !== null) {
+        serverQueue.connection.dispatcher.end();
+    } else {
+        serverQueue.voiceChannel.leave();
+        queue.delete(message.guild.id);
+    }
 }
 
 function leave(message, serverQueue) {
@@ -168,6 +178,7 @@ async function play(guild, song) {
         .play(ytdl(song.url, { filter: "audioonly" }), { type: "unknown" })
         .once("finish", () => {
             serverQueue.songs.shift();
+            //maybe need try statement here for crash
             play(guild, serverQueue.songs[0]);
         })
         .once("error", (error) => console.error(error));
