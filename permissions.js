@@ -28,16 +28,16 @@ module.exports = {
         switch (command) {
             case "help":
                 break;
-            case "allowRole":
+            case "allowrole":
                 roleAllow(message, words);
                 break;
-            case "denyRole":
+            case "denyrole":
                 roleDeny(message, words);
                 break;
-            case "allowUser":
+            case "allowuser":
                 userAllow(message, words);
                 break;
-            case "denyUser":
+            case "denyuser":
                 userDeny(message, words);
                 break;
             default:
@@ -113,7 +113,7 @@ function getUser(message, words) {
     const userId = /^([0-9]+)$/;
     const matches2 = userId.exec(words);
     if (matches2 !== null) {
-        user = message.channel.guild.users.cache.find(
+        user = message.channel.guild.members.cache.find(
             (user) => user.id.toLowerCase() === words
         );
         return user;

@@ -8,7 +8,7 @@ module.exports = {
     run: async (command, message, mainClient) => {
         client = mainClient;
         if (
-            !(await hasPermissionRole(message, message.member.roles.cache)) ||
+            !(await hasPermissionRole(message, message.member.roles.cache)) &&
             !(await hasPermissionUser(message, message.author.id))
         ) {
             return message.channel.send(

@@ -4,7 +4,7 @@ const { hasPermissionRole, hasPermissionUser } = require("./SQLDataBase.js");
 module.exports = {
     loadPage: async (sub, message) => {
         if (
-            !(await hasPermissionRole(message, message.member.roles.cache)) ||
+            !(await hasPermissionRole(message, message.member.roles.cache)) &&
             !(await hasPermissionUser(message, message.author.id))
         ) {
             return message.channel.send(
