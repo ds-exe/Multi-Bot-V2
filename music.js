@@ -94,7 +94,7 @@ async function execute(message, serverQueue) {
     }
 }
 
-function skip(message, serverQueue) {
+async function skip(message, serverQueue) {
     if (!message.member.voice.channel)
         return message.channel.send(
             "You have to be in a voice channel to stop the music!"
@@ -109,8 +109,18 @@ function skip(message, serverQueue) {
     if (serverQueue.connection.dispatcher !== null) {
         serverQueue.connection.dispatcher.end();
     } else {
-        serverQueue.voiceChannel.leave();
-        queue.delete(message.guild.id);
+        const voiceChannel = message.member.voice.channel;
+        serverQueue.voiceChannel = voiceChannel;
+        try {
+            let connection = await voiceChannel.join();
+            serverQueue.connection = connection;
+            serverQueue.songs.shift();
+            play(message.guild, serverQueue.songs[0]);
+        } catch (err) {
+            console.log(err);
+            queue.delete(message.guild.id);
+            return message.channel.send(err);
+        }
     }
 }
 
