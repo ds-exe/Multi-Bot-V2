@@ -11,7 +11,7 @@ module.exports = {
                 "You do not have permission to use this command!"
             );
         }
-        const subs = /^([a-z_]+)$/;
+        const subs = /^([a-z1-9_]+)$/;
         if (sub[0] === undefined || sub[0] === "help") {
             message.channel.send("Valid inputs: \n!reddit {desired subreddit}");
             return;
