@@ -1,7 +1,7 @@
 const timezones = require("./timezones.json");
 const { DateTime } = require("luxon");
 const Embeds = require("./embeds.js");
-const { getTimezone } = require("./SQLDataBase.js");
+const { getTimezone } = require("./SQLDatabase.js");
 
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const instructions =

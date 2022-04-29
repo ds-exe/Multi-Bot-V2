@@ -5,7 +5,7 @@ const {
     denyRole,
     allowUser,
     denyUser,
-} = require("./SQLDataBase.js");
+} = require("./SQLDatabase.js");
 
 module.exports = {
     run: (message, words) => {

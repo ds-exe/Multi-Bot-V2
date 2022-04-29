@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { hasPermissionRole, hasPermissionUser } = require("./SQLDataBase.js");
+const { hasPermissionRole, hasPermissionUser } = require("./SQLDatabase.js");
 
 module.exports = {
     loadPage: async (sub, message) => {

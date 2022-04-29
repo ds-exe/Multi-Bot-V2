@@ -1,5 +1,5 @@
 const ytdl = require("ytdl-core");
-const { hasPermissionRole, hasPermissionUser } = require("./SQLDataBase.js");
+const { hasPermissionRole, hasPermissionUser } = require("./SQLDatabase.js");
 
 const queue = new Map();
 let client = null;

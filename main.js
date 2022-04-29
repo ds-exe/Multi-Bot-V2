@@ -1,7 +1,7 @@
 const config = require("./config.json");
 const Discord = require("discord.js");
 const Timestamp = require("./timestamp.js");
-const { setTimezone, getTimezone, open, close } = require("./SQLDataBase.js");
+const { setTimezone, getTimezone, open, close } = require("./SQLDatabase.js");
 const Reddit = require("./reddit.js");
 const Music = require("./music");
 const Permissions = require("./permissions.js");
