@@ -2,4 +2,4 @@
 json/
 node_modules/
 config.json
-*.db
+database_backups/
