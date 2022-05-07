@@ -18,6 +18,7 @@ module.exports = {
         const serverQueue = queue.get(message.guild.id);
         switch (command) {
             case "play":
+                message.suppressEmbeds(true);
                 execute(message, serverQueue);
                 break;
             case "skip":
