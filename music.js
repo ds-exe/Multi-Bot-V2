@@ -185,7 +185,9 @@ async function play(guild, song) {
 
     client.user.setActivity("Music", { type: "PLAYING" });
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url, { filter: "audioonly" }), { type: "unknown" })
+        .play(ytdl(song.url, { filter: "audioonly", highWaterMark: 1 << 25 }), {
+            type: "unknown",
+        })
         .once("finish", () => {
             serverQueue.songs.shift();
             //maybe need try statement here for crash
