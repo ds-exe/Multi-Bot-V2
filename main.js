@@ -29,12 +29,13 @@ client.on("message", (message) => {
             return;
         }
         if (
-            message.channel
+            !message.channel
                 .permissionsFor(message.client.user)
                 .has("SEND_MESSAGES")
         ) {
-            next(message);
+            return;
         }
+        next(message);
     }
 });
 
