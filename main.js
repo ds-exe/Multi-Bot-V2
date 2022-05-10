@@ -21,7 +21,20 @@ client.on("ready", () => {
 
 client.on("message", (message) => {
     if (message.content.startsWith(prefix) && !message.author.bot) {
-        next(message);
+        member = message.guild.members.cache.find(
+            (member) => member.user === message.client.user
+        );
+
+        if (member.isCommunicationDisabled()) {
+            return;
+        }
+        if (
+            message.channel
+                .permissionsFor(message.client.user)
+                .has("SEND_MESSAGES")
+        ) {
+            next(message);
+        }
     }
 });
 
