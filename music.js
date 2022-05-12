@@ -18,7 +18,6 @@ module.exports = {
         const serverQueue = queue.get(message.guild.id);
         switch (command) {
             case "play":
-                message.suppressEmbeds(true);
                 execute(message, serverQueue);
                 break;
             case "skip":
@@ -39,6 +38,7 @@ module.exports = {
 
 async function execute(message, serverQueue) {
     const args = message.content.split(" ");
+    message.suppressEmbeds(/^-$/.exec(args[2]));
 
     const voiceChannel = message.member.voice.channel;
     if (!voiceChannel)
@@ -53,12 +53,12 @@ async function execute(message, serverQueue) {
     }
 
     const youtube =
-        /^(https:\/\/(www.)?youtu.be\/[0-9a-zA-Z_-]+|https:\/\/(www.)?youtube.com\/watch\?v=[0-9a-zA-Z_-]+)/;
+        /^(<)?(https:\/\/(www.)?youtu.be\/[0-9a-zA-Z_-]+|https:\/\/(www.)?youtube.com\/watch\?v=[0-9a-zA-Z_-]+)(>)?/;
     const matches = youtube.exec(args[1]);
     if (matches === null) {
         return message.channel.send("Invalid url");
     }
-    const songInfo = await ytdl.getInfo(args[1]);
+    const songInfo = await ytdl.getInfo(matches[2]);
     const song = {
         title: songInfo.videoDetails.title,
         url: songInfo.videoDetails.video_url,
